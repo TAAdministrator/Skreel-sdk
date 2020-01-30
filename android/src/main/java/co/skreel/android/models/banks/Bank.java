@@ -1,9 +1,19 @@
-package co.skreel.android.models;
+package co.skreel.android.models.banks;
+
+import com.google.gson.annotations.SerializedName;
 
 public class Bank {
+
+    @SerializedName("bankAccronym")
     private String bankAcronym;
+
+    @SerializedName("bankCode")
     private String bankCode;
+
+    @SerializedName("bankName")
     private String bankName;
+
+    @SerializedName("type")
     private String type;
 
     private Bank(String bankAcronym, String bankCode, String bankName, String type) {
