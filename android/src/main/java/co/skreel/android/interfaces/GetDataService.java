@@ -21,10 +21,10 @@ public interface GetDataService {
 
     //BANK ACCOUNTS
     @POST("bank-accounts")
-    Call<BankAccount> createAccount(@Body BankAccount bankAccount);
+    Call<BankAccount> createBankAccount(@Body BankAccount bankAccount);
 
-    @GET("bank-accounts") ///bank-accounts?phone_number=08091990511
-    Call<List<BankAccount>> getBankAccounts(@Query("phone_number") String phoneNumber);
+    @GET("bank-accounts")
+    Call<BankAccount> getBankAccountsByPhoneNumber(@Query("phone_number") String phoneNumber);
 
     @GET("bank-accounts/{bank_account_id}")  //bank-accounts/sfhkfsuiweuiweuw
     Call<BankAccount> getBankAccountById(@Path("bank_account_id") String bankAccountId);
@@ -88,12 +88,5 @@ public interface GetDataService {
 
     @GET("customers/{customer_id}/bank-accounts/{bank_account_id}")
     Call<CustomerResponse> getCustomerBankAccountsWithIds(@Path("customer_id") String customerId, @Path("bank_account_id") String cardId);
-
-
-
-    //TODO This should be verified from AKin
-//    @GET("customers/{customer_phone_number}")
-//    Call<CustomerResponse> getCustomerByPhoneNumber(@Path("customer_id") String customerId);
-
 
 }
