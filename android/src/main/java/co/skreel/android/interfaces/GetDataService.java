@@ -67,6 +67,30 @@ public interface GetDataService {
     @GET("customers/{customer_id}")
     Call<CustomerResponse> getCustomerById(@Path("customer_id") String customerId);
 
+    @GET("customers/{phone_number}")
+    Call<CustomerResponse> getCustomerByPhoneNumber(@Path("phone_number") String customerPhoneNumber);
+
+    @PATCH("customers/{customer_id}")
+    Call<CustomerResponse> updateCustomerDetails(@Path("customer_id") String customerId, @Body Customer customer);
+
+    @DELETE("customers/{customer_id}")
+    Call<CustomerResponse> deleteCustomer(@Path("customer_id") String customerId);
+
+    @GET("customers/{customer_id}/cards")
+    Call<CustomerResponse> getListOfCustomerCards(@Path("customer_id") String customerId);
+
+    @GET("customers/{customer_id}/bank-accounts")
+    Call<CustomerResponse> getListOfCustomerBankAccounts(@Path("customer_id") String customerId);
+
+
+    @GET("customers/{customer_id}/cards/{card_id}")
+    Call<CustomerResponse> getCustomerCardWithIds(@Path("customer_id") String customerId, @Path("card_id") String cardId);
+
+    @GET("customers/{customer_id}/bank-accounts/{bank_account_id}")
+    Call<CustomerResponse> getCustomerBankAccountsWithIds(@Path("customer_id") String customerId, @Path("bank_account_id") String cardId);
+
+
+
     //TODO This should be verified from AKin
 //    @GET("customers/{customer_phone_number}")
 //    Call<CustomerResponse> getCustomerByPhoneNumber(@Path("customer_id") String customerId);
