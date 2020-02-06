@@ -2,7 +2,9 @@ package co.skreel.android.interfaces;
 
 import java.util.List;
 
-import co.skreel.android.models.BankAccount;
+import co.skreel.android.models.bankaccount.BankAccount;
+import co.skreel.android.models.bankaccount.BankAccountListResponse;
+import co.skreel.android.models.bankaccount.BankAccountResponse;
 import co.skreel.android.models.cards.Card;
 import co.skreel.android.models.banks.AllBanksResponse;
 import co.skreel.android.models.cards.CardResponse;
@@ -22,19 +24,19 @@ public interface GetDataService {
 
     //BANK ACCOUNTS
     @POST("bank-accounts")
-    Call<BankAccount> createBankAccount(@Body BankAccount bankAccount);
+    Call<BankAccountResponse> createBankAccount(@Body BankAccount bankAccount);
 
     @GET("bank-accounts")
-    Call<BankAccount> getBankAccountsByPhoneNumber(@Query("phone_number") String phoneNumber);
+    Call<BankAccountListResponse> getBankAccountsByPhoneNumber(@Query("phone_number") String phoneNumber);
 
     @GET("bank-accounts/{bank_account_id}")  //bank-accounts/sfhkfsuiweuiweuw
-    Call<BankAccount> getBankAccountById(@Path("bank_account_id") String bankAccountId);
+    Call<BankAccountResponse> getBankAccountById(@Path("bank_account_id") String bankAccountId);
 
     @PATCH("bank-accounts/{bank_account_id}")  //bank-accounts/sfhkfsuiweuiweuw
-    Call<BankAccount>  updateBankAccount(@Path("bank_account_id") String bankAccountId);
+    Call<BankAccountResponse>  updateBankAccount(@Path("bank_account_id") String bankAccountId, BankAccount bankAccount);
 
     @DELETE("bank-accounts/{bank_account_id}")  //bank-accounts/sfhkfsuiweuiweuw
-    Call<BankAccount> deleteBankAccount(@Path("bank_account_id") String bankAccountId);
+    Call<BankAccountResponse> deleteBankAccount(@Path("bank_account_id") String bankAccountId);
 
 
     //BANKS

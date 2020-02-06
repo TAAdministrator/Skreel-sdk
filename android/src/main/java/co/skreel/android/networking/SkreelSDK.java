@@ -5,18 +5,24 @@ import android.util.Log;
 
 import java.util.List;
 
+import co.skreel.android.interfaces.bankaccountlisteners.BankAccountCreatedListener;
+import co.skreel.android.interfaces.bankaccountlisteners.BankAccountDeletedListener;
+import co.skreel.android.interfaces.bankaccountlisteners.BankAccountListRetrievedListener;
+import co.skreel.android.interfaces.bankaccountlisteners.BankAccountRetrievedListener;
+import co.skreel.android.interfaces.bankaccountlisteners.BankAccountUpdatedListener;
 import co.skreel.android.interfaces.cardlisteners.CardDeletedListener;
 import co.skreel.android.interfaces.cardlisteners.CardRetrievedListener;
 import co.skreel.android.interfaces.customerlisteners.CustomerCreatedListener;
 import co.skreel.android.interfaces.customerlisteners.CustomerDeletedListener;
 import co.skreel.android.interfaces.customerlisteners.CustomerListRetrievedListener;
-import co.skreel.android.interfaces.customerlisteners.CustomerListener;
 import co.skreel.android.interfaces.GetDataService;
 import co.skreel.android.interfaces.cardlisteners.CardCreatedListener;
 import co.skreel.android.interfaces.cardlisteners.CardUpdatedListener;
 import co.skreel.android.interfaces.customerlisteners.CustomerRetrievedListener;
 import co.skreel.android.interfaces.customerlisteners.CustomerUpdatedListener;
-import co.skreel.android.models.Meta;
+import co.skreel.android.models.bankaccount.BankAccount;
+import co.skreel.android.models.bankaccount.BankAccountListResponse;
+import co.skreel.android.models.bankaccount.BankAccountResponse;
 import co.skreel.android.models.cards.Card;
 import co.skreel.android.models.banks.AllBanksResponse;
 import co.skreel.android.models.cards.CardResponse;
@@ -286,6 +292,109 @@ public class SkreelSDK {
 
             @Override
             public void onFailure(Call<CardResponse> call, Throwable t) {
+                //TODO Figure out what to do with this response
+                Log.d(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
+    public static void createBankAccount(BankAccount bankAccount, final BankAccountCreatedListener bankAccountCreatedListener){
+        Call<BankAccountResponse> bankAccountResponseCall = getInstance().service.createBankAccount(bankAccount);
+
+        bankAccountResponseCall.enqueue(new Callback<BankAccountResponse>() {
+            @Override
+            public void onResponse(Call<BankAccountResponse> call, Response<BankAccountResponse> response) {
+                if(response.code() == 200)
+                    bankAccountCreatedListener.onCreate(response.body().getBankAccount());
+                else
+                    bankAccountCreatedListener.onFailure(response.body().getMeta());
+            }
+
+            @Override
+            public void onFailure(Call<BankAccountResponse> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+
+    public static void getBankAccountById(String bankAccountId, final BankAccountRetrievedListener bankAccountRetrievedListener){
+        Call<BankAccountResponse> cardResponseCall = getInstance().service.getBankAccountById(bankAccountId);
+
+        cardResponseCall.enqueue(new Callback<BankAccountResponse>() {
+            @Override
+            public void onResponse(Call<BankAccountResponse> call, Response<BankAccountResponse> response) {
+                if(response.code() == 200)
+                    bankAccountRetrievedListener.onRetrieve(response.body().getBankAccount());
+                else
+                    bankAccountRetrievedListener.onFailure(SkreelUtil.deserializeRetrofitErrorBody(response).getMeta());
+            }
+
+            @Override
+            public void onFailure(Call<BankAccountResponse> call, Throwable t) {
+                //TODO Figure out what to do with this response
+                Log.d(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
+    public static void getBankAccountListByPhoneNumber(String phoneNumber, final BankAccountListRetrievedListener bankAccountListRetrievedListener){
+        Call<BankAccountListResponse> bankAccountListResponseCall = getInstance().service.getBankAccountsByPhoneNumber(phoneNumber);
+
+        bankAccountListResponseCall.enqueue(new Callback<BankAccountListResponse>() {
+            @Override
+            public void onResponse(Call<BankAccountListResponse> call, Response<BankAccountListResponse> response) {
+                if(response.code() == 200)
+                    bankAccountListRetrievedListener.onBankAccountListRetrieve(response.body().getData());
+                else
+                    bankAccountListRetrievedListener.onFailure(SkreelUtil.deserializeRetrofitErrorBody(response).getMeta());
+
+            }
+
+            @Override
+            public void onFailure(Call<BankAccountListResponse> call, Throwable t) {
+                //TODO Figure out what to do with this response
+                Log.d(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
+    public static void updateBankAccount(BankAccount bankAccount, final BankAccountUpdatedListener bankAccountUpdatedListener){
+        Call<BankAccountResponse> bankAccountResponseCall = getInstance().service.updateBankAccount(bankAccount.ge,bankAccount);
+
+        bankAccountResponseCall.enqueue(new Callback<BankAccountResponse>() {
+            @Override
+            public void onResponse(Call<BankAccountResponse> call, Response<BankAccountResponse> response) {
+
+                //TODO Verify the code to verify this code snippet before uncommenting
+                if(response.code() == 200)
+                    bankAccountUpdatedListener.onUpdate(response.body().getBankAccount());
+                else
+                    bankAccountUpdatedListener.onFailure(SkreelUtil.deserializeRetrofitErrorBody(response).getMeta());
+            }
+
+            @Override
+            public void onFailure(Call<BankAccountResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public static void deleteBankAccount(String bankAccountId, final BankAccountDeletedListener bankAccountDeletedListener){
+        Call<BankAccountResponse> cardResponseCall = getInstance().service.deleteBankAccount(bankAccountId);
+
+        cardResponseCall.enqueue(new Callback<BankAccountResponse>() {
+            @Override
+            public void onResponse(Call<BankAccountResponse> call, Response<BankAccountResponse> response) {
+                if(response.code() == 204)
+                    bankAccountDeletedListener.onDelete(SkreelUtil.deleteSuccess());
+                else
+                    bankAccountDeletedListener.onFailure(SkreelUtil.deserializeRetrofitErrorBody(response).getMeta());
+            }
+
+            @Override
+            public void onFailure(Call<BankAccountResponse> call, Throwable t) {
                 //TODO Figure out what to do with this response
                 Log.d(TAG, "onFailure: " + t.getMessage());
             }
