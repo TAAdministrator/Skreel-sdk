@@ -9,11 +9,9 @@ public class Customer {
     @SerializedName("phone_number")
     private String phoneNumber;
 
-    @Expose(serialize=false)
     @SerializedName("bvn")
     private String bvn;
 
-    @Expose(serialize=false)
     @SerializedName("id")
     private String userId;
 

@@ -7,6 +7,7 @@ import co.skreel.android.models.cards.Card;
 import co.skreel.android.models.banks.AllBanksResponse;
 import co.skreel.android.models.cards.CardResponse;
 import co.skreel.android.models.customer.Customer;
+import co.skreel.android.models.customer.CustomerListResponse;
 import co.skreel.android.models.customer.CustomerResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -67,8 +68,8 @@ public interface GetDataService {
     @GET("customers/{customer_id}")
     Call<CustomerResponse> getCustomerById(@Path("customer_id") String customerId);
 
-    @GET("customers/{phone_number}")
-    Call<CustomerResponse> getCustomerByPhoneNumber(@Path("phone_number") String customerPhoneNumber);
+    @GET("customers")
+    Call<CustomerListResponse> getCustomersByPhoneNumber(@Query("phone_number") List<String> customerPhoneNumbers);
 
     @PATCH("customers/{customer_id}")
     Call<CustomerResponse> updateCustomerDetails(@Path("customer_id") String customerId, @Body Customer customer);

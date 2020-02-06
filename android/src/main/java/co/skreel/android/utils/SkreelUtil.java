@@ -7,6 +7,7 @@ import com.google.gson.TypeAdapter;
 
 import java.io.IOException;
 
+import co.skreel.android.models.Meta;
 import co.skreel.android.models.cards.CardResponse;
 import retrofit2.Response;
 
@@ -29,5 +30,9 @@ public class SkreelUtil {
             e.printStackTrace();
         }
         return cardResponse;
+    }
+
+    public static Meta deleteSuccess(){
+        return new Meta(204,"No Content");
     }
 }

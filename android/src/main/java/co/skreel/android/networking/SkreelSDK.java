@@ -7,15 +7,21 @@ import java.util.List;
 
 import co.skreel.android.interfaces.cardlisteners.CardDeletedListener;
 import co.skreel.android.interfaces.cardlisteners.CardRetrievedListener;
+import co.skreel.android.interfaces.customerlisteners.CustomerCreatedListener;
+import co.skreel.android.interfaces.customerlisteners.CustomerDeletedListener;
+import co.skreel.android.interfaces.customerlisteners.CustomerListRetrievedListener;
 import co.skreel.android.interfaces.customerlisteners.CustomerListener;
 import co.skreel.android.interfaces.GetDataService;
 import co.skreel.android.interfaces.cardlisteners.CardCreatedListener;
 import co.skreel.android.interfaces.cardlisteners.CardUpdatedListener;
+import co.skreel.android.interfaces.customerlisteners.CustomerRetrievedListener;
+import co.skreel.android.interfaces.customerlisteners.CustomerUpdatedListener;
 import co.skreel.android.models.Meta;
 import co.skreel.android.models.cards.Card;
 import co.skreel.android.models.banks.AllBanksResponse;
 import co.skreel.android.models.cards.CardResponse;
 import co.skreel.android.models.customer.Customer;
+import co.skreel.android.models.customer.CustomerListResponse;
 import co.skreel.android.models.customer.CustomerResponse;
 import co.skreel.android.utils.SkreelUtil;
 import okhttp3.OkHttpClient;
@@ -41,7 +47,6 @@ public class SkreelSDK {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
-
 
         retrofit = new retrofit2.Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -94,27 +99,106 @@ public class SkreelSDK {
            });
     }
 
-    public static void createCustomer(final CustomerListener customerListener){
-        Customer customer = new Customer.Builder().setCustomerPhoneNumber("08031234567").build();
+    public static void createCustomer(String phoneNumber , final CustomerCreatedListener customerCreatedListener){
+        Customer customer = new Customer.Builder().setCustomerPhoneNumber(phoneNumber).build();
 
-        //TODO change this to a string and not a customer type
         Call<CustomerResponse> customerResponseCall = getInstance().service.createCustomer(customer);
         customerResponseCall.enqueue(new Callback<CustomerResponse>() {
             @Override
             public void onResponse(Call<CustomerResponse> call, Response<CustomerResponse> response) {
                 Log.d(TAG, "onResponse: " + response.body());
-                if(response.body() != null)
-                    customerListener.onCustomerRetrieved(response.body().getData());
+                if(response.code() == 201)
+                    customerCreatedListener.onCustomerCreated(response.body().getData());
+                else
+                    customerCreatedListener.onFailure(SkreelUtil.deserializeRetrofitErrorBody(response).getMeta());
             }
 
             @Override
             public void onFailure(Call<CustomerResponse> call, Throwable t) {
-                customerListener.onCustomerNotRetrieved(t.getMessage());
+//                customerListener.onCustomerNotRetrieved(t.getMessage());
                 Log.d(TAG, "onFailure: " + t.getMessage());
                 Log.d(TAG, "onFailure: " + t.toString());
             }
         });
     }
+
+    public static void getCustomerbyId(String customerId, final CustomerRetrievedListener customerRetrievedListener){
+        Call<CustomerResponse> customerResponseCall = getInstance().service.getCustomerById(customerId);
+        customerResponseCall.enqueue(new Callback<CustomerResponse>() {
+            @Override
+            public void onResponse(Call<CustomerResponse> call, Response<CustomerResponse> response) {
+                if(response.code() == 200)
+                    customerRetrievedListener.onCustomerRetrieved(response.body().getData());
+                else
+                    customerRetrievedListener.onFailure(SkreelUtil.deserializeRetrofitErrorBody(response).getMeta());
+
+            }
+
+            @Override
+            public void onFailure(Call<CustomerResponse> call, Throwable t) {
+                //TODO: raise an exception. No failure should be silent
+            }
+        });
+
+    }
+
+    public static void getCustomersByPhoneNumber(List<String> phoneNumbers, final CustomerListRetrievedListener customerListRetrievedListener){
+        final Call<CustomerListResponse> customerListResponseCall = getInstance().service.getCustomersByPhoneNumber(phoneNumbers);
+
+        customerListResponseCall.enqueue(new Callback<CustomerListResponse>() {
+            @Override
+            public void onResponse(Call<CustomerListResponse> call, Response<CustomerListResponse> response) {
+                if(response.code() == 200)
+                    customerListRetrievedListener.onCustomerListRetrieved(response.body().getData());
+                else
+                    customerListRetrievedListener.onFailure(SkreelUtil.deserializeRetrofitErrorBody(response).getMeta());
+            }
+
+            @Override
+            public void onFailure(Call<CustomerListResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+    public static void updateCustomer(Customer customer, final CustomerUpdatedListener customerUpdatedListener){
+        Call<CustomerResponse> customerResponseCall = getInstance().service.updateCustomerDetails(customer.getUserId(), customer);
+        customerResponseCall.enqueue(new Callback<CustomerResponse>() {
+            @Override
+            public void onResponse(Call<CustomerResponse> call, Response<CustomerResponse> response) {
+                if(response.code() == 200)
+                    customerUpdatedListener.onCustomerUpdate(response.body().getData());
+                else
+                    customerUpdatedListener.onFailure(SkreelUtil.deserializeRetrofitErrorBody(response).getMeta());
+            }
+
+            @Override
+            public void onFailure(Call<CustomerResponse> call, Throwable t) {
+                //TODO: raise an exception. No failure should be silent
+            }
+        });
+
+    }
+
+    public static void deleteCustomer(String customerId, final CustomerDeletedListener customerDeletedListener){
+        Call<CustomerResponse> customerResponseCall = getInstance().service.deleteCustomer(customerId);
+        customerResponseCall.enqueue(new Callback<CustomerResponse>() {
+            @Override
+            public void onResponse(Call<CustomerResponse> call, Response<CustomerResponse> response) {
+                if(response.code() == 200)
+                    customerDeletedListener.onCustomerDeleted(SkreelUtil.deleteSuccess());
+                else
+                    customerDeletedListener.onFailure(SkreelUtil.deserializeRetrofitErrorBody(response).getMeta());
+            }
+
+            @Override
+            public void onFailure(Call<CustomerResponse> call, Throwable t) {
+                //TODO: raise an exception. No failure should be silent
+            }
+        });
+    }
+
 
     /*
     *
@@ -194,7 +278,7 @@ public class SkreelSDK {
             @Override
             public void onResponse(Call<CardResponse> call, Response<CardResponse> response) {
                 if(response.code() == 204)
-                    cardDeletedListener.onDelete(new Meta(204,"No Content"));
+                    cardDeletedListener.onDelete(SkreelUtil.deleteSuccess());
                 else
                     cardDeletedListener.onFailure(SkreelUtil.deserializeRetrofitErrorBody(response).getMeta());
 

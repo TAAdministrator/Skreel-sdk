@@ -9,15 +9,12 @@ import co.skreel.android.models.Meta;
 
 public class AllBanksResponse {
 
-    @Expose(deserialize = false)
     @SerializedName("data")
     private List<Bank> data;
 
-    @Expose()
     @SerializedName("meta")
     private Meta meta;
 
-    @Expose()
     @SerializedName("status")
     private String status;
 
