@@ -2,15 +2,25 @@ package co.skreel.android.interfaces;
 
 import java.util.List;
 
+import co.skreel.android.interfaces.paymentlisteners.PaymentIntentListener;
+import co.skreel.android.interfaces.paymentlisteners.PaymentOtpListener;
 import co.skreel.android.models.bankaccount.BankAccount;
 import co.skreel.android.models.bankaccount.BankAccountListResponse;
 import co.skreel.android.models.bankaccount.BankAccountResponse;
 import co.skreel.android.models.cards.Card;
 import co.skreel.android.models.banks.AllBanksResponse;
 import co.skreel.android.models.cards.CardResponse;
+import co.skreel.android.models.cards.CardValidation;
+import co.skreel.android.models.cards.CardValidationOTP;
+import co.skreel.android.models.cards.CardValidationOTPResponse;
+import co.skreel.android.models.cards.CardValidationResponse;
 import co.skreel.android.models.customer.Customer;
 import co.skreel.android.models.customer.CustomerListResponse;
 import co.skreel.android.models.customer.CustomerResponse;
+import co.skreel.android.models.payments.Payment;
+import co.skreel.android.models.payments.PaymentResponse;
+import co.skreel.android.models.payments.ValidatePaymentOTP;
+import co.skreel.android.models.payments.ValidatePaymentOTPResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -91,5 +101,22 @@ public interface GetDataService {
 
     @GET("customers/{customer_id}/bank-accounts/{bank_account_id}")
     Call<CustomerResponse> getCustomerBankAccountsWithIds(@Path("customer_id") String customerId, @Path("bank_account_id") String cardId);
+
+
+    //PAYMENTS
+
+    @POST("payments")
+    Call<PaymentResponse> makePayment(@Body Payment payment);
+
+    @POST("payments/otp")
+    Call<ValidatePaymentOTPResponse> validatePaymentOTP(@Body ValidatePaymentOTP validatePaymentOTP);
+
+    //CARD VALIDATIONS
+
+    @POST("card-validations")
+    Call<CardValidationResponse> cardValidation(@Body CardValidation cardValidation);
+
+    @POST("card-validations/otp")
+    Call<CardValidationOTPResponse> cardValidationOTP(@Body CardValidationOTP cardValidationOTP);
 
 }

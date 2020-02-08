@@ -5,10 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class Card {
 
-    @Expose(deserialize = false)
-    @SerializedName("customer_id")
-    private String customerId;
-
     @Expose(serialize = false)
     @SerializedName("id")
     private String cardId;
@@ -29,33 +25,14 @@ public class Card {
     @SerializedName("expiry_date")
     private String expiryDate;
 
-//    public Card(String customerId, String cardId, String pin, String pan, String cvv, String expiryDate) {
-//        this.customerId = customerId;
-//        this.cardId = cardId;
-//        this.pin = pin;
-//        this.pan = pan;
-//        this.cvv = cvv;
-//        this.expiryDate = expiryDate;
-//    }
-
-
     public Card() {
     }
 
-    public Card(String customerId, String pin, String pan, String cvv, String expiryDate) {
-        this.customerId = customerId;
+    public Card (String pin, String pan, String cvv, String expiryDate) {
         this.pin = pin;
         this.pan = pan;
         this.cvv = cvv;
         this.expiryDate = expiryDate;
-    }
-
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
     }
 
     public String getPin() {
@@ -91,17 +68,10 @@ public class Card {
     }
 
     public static class Builder{
-        private String customerId;
-        private String cardId;
         private String pin;
         private String pan;
         private String cvv;
         private String expiryDate;
-
-        public Builder setCustomerId(String customerId) {
-            this.customerId = customerId;
-            return this;
-        }
 
         public Builder setPin(String pin) {
             this.pin = pin;
@@ -123,25 +93,14 @@ public class Card {
             return this;
         }
 
-        public Builder setCardId(final String cardId){
-            this.cardId = cardId;
-            return this;
-        }
+//        public Builder setCardId(final String cardId){
+//            this.cardId = cardId;
+//            return this;
+//        }
 
         public Card build(){
-            return new Card(customerId,pin,pan,cvv,expiryDate);
+            return new Card(pin,pan,cvv,expiryDate);
         }
     }
 
-    @Override
-    public String toString() {
-        return "Card{" +
-                "customerId='" + customerId + '\'' +
-                ", cardId='" + cardId + '\'' +
-                ", pin='" + pin + '\'' +
-                ", pan='" + pan + '\'' +
-                ", cvv='" + cvv + '\'' +
-                ", expiryDate='" + expiryDate + '\'' +
-                '}';
-    }
 }

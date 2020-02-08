@@ -1,12 +1,22 @@
-package co.skreel.android.models;
+package co.skreel.android.models.payments;
 
-public class ValidateOTP {
+import com.google.gson.annotations.SerializedName;
+
+public class ValidatePaymentOTP {
+
+    @SerializedName("gateway_payment_id")
     private String gatewayPaymentId;
+
+    @SerializedName("otp")
     private String otp;
+
+    @SerializedName("card_id")
     private String cardId;
+
+    @SerializedName("payment_reference")
     private String paymentReference;
 
-    private ValidateOTP(String gatewayPaymentId, String otp, String cardId, String paymentReference) {
+    private ValidatePaymentOTP(String gatewayPaymentId, String otp, String cardId, String paymentReference) {
         this.gatewayPaymentId = gatewayPaymentId;
         this.otp = otp;
         this.cardId = cardId;
@@ -71,8 +81,8 @@ public class ValidateOTP {
             return this;
         }
 
-        public ValidateOTP build(){
-            return new ValidateOTP(gatewayPaymentId,otp,cardId,paymentReference);
+        public ValidatePaymentOTP build(){
+            return new ValidatePaymentOTP(gatewayPaymentId,otp,cardId,paymentReference);
         }
     }
 }

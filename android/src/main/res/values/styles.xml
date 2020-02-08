@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="registerEditTextStyle">
+        <item name="android:layout_height">30dp</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:fontFamily">@font/sailec_medium</item>
+        <item name="android:background">@drawable/edittext_white_border</item>
+    </style>
+
+    <style name="PinkFlatButton">
+        <item name="android:background">@drawable/pink_flat_button</item>
+        <item name="android:textColor">@color/white_color</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/sailec_regular</item>
+    </style>
+</resources>

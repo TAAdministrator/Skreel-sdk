@@ -2,12 +2,16 @@ package co.skreel.example;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.Arrays;
 import java.util.List;
 
+import co.skreel.android.activities.SkreelCardActivity;
 import co.skreel.android.interfaces.cardlisteners.CardCreatedListener;
 import co.skreel.android.interfaces.cardlisteners.CardDeletedListener;
 import co.skreel.android.interfaces.cardlisteners.CardRetrievedListener;
@@ -130,10 +134,17 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        SkreelSDK.deleteCustomer();
+//        SkreelSDK.deleteCustomer();
 
 
-
+        Intent i = new Intent(this, SkreelCardActivity.class);
+        Button button = findViewById(R.id.click_me);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(i);
+            }
+        });
 
     }
 }

@@ -12,6 +12,8 @@ import co.skreel.android.interfaces.bankaccountlisteners.BankAccountRetrievedLis
 import co.skreel.android.interfaces.bankaccountlisteners.BankAccountUpdatedListener;
 import co.skreel.android.interfaces.cardlisteners.CardDeletedListener;
 import co.skreel.android.interfaces.cardlisteners.CardRetrievedListener;
+import co.skreel.android.interfaces.cardlisteners.CardValidationListener;
+import co.skreel.android.interfaces.cardlisteners.CardValidationOTPListener;
 import co.skreel.android.interfaces.customerlisteners.CustomerCreatedListener;
 import co.skreel.android.interfaces.customerlisteners.CustomerDeletedListener;
 import co.skreel.android.interfaces.customerlisteners.CustomerListRetrievedListener;
@@ -20,15 +22,25 @@ import co.skreel.android.interfaces.cardlisteners.CardCreatedListener;
 import co.skreel.android.interfaces.cardlisteners.CardUpdatedListener;
 import co.skreel.android.interfaces.customerlisteners.CustomerRetrievedListener;
 import co.skreel.android.interfaces.customerlisteners.CustomerUpdatedListener;
+import co.skreel.android.interfaces.paymentlisteners.PaymentIntentListener;
+import co.skreel.android.interfaces.paymentlisteners.PaymentOtpListener;
 import co.skreel.android.models.bankaccount.BankAccount;
 import co.skreel.android.models.bankaccount.BankAccountListResponse;
 import co.skreel.android.models.bankaccount.BankAccountResponse;
 import co.skreel.android.models.cards.Card;
 import co.skreel.android.models.banks.AllBanksResponse;
 import co.skreel.android.models.cards.CardResponse;
+import co.skreel.android.models.cards.CardValidation;
+import co.skreel.android.models.cards.CardValidationOTP;
+import co.skreel.android.models.cards.CardValidationOTPResponse;
+import co.skreel.android.models.cards.CardValidationResponse;
 import co.skreel.android.models.customer.Customer;
 import co.skreel.android.models.customer.CustomerListResponse;
 import co.skreel.android.models.customer.CustomerResponse;
+import co.skreel.android.models.payments.Payment;
+import co.skreel.android.models.payments.PaymentResponse;
+import co.skreel.android.models.payments.ValidatePaymentOTP;
+import co.skreel.android.models.payments.ValidatePaymentOTPResponse;
 import co.skreel.android.utils.SkreelUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -361,7 +373,7 @@ public class SkreelSDK {
     }
 
     public static void updateBankAccount(BankAccount bankAccount, final BankAccountUpdatedListener bankAccountUpdatedListener){
-        Call<BankAccountResponse> bankAccountResponseCall = getInstance().service.updateBankAccount(bankAccount.ge,bankAccount);
+        Call<BankAccountResponse> bankAccountResponseCall = getInstance().service.updateBankAccount(bankAccount.getBankAccountId(),bankAccount);
 
         bankAccountResponseCall.enqueue(new Callback<BankAccountResponse>() {
             @Override
@@ -399,6 +411,85 @@ public class SkreelSDK {
                 Log.d(TAG, "onFailure: " + t.getMessage());
             }
         });
+    }
+
+    public static void makePayment(Payment payment, final PaymentIntentListener paymentIntentListener){
+        Call<PaymentResponse> paymentResponseCall = getInstance().service.makePayment(payment);
+
+        paymentResponseCall.enqueue(new Callback<PaymentResponse>() {
+            @Override
+            public void onResponse(Call<PaymentResponse> call, Response<PaymentResponse> response) {
+                if(response.code() == 201)
+                    paymentIntentListener.onSuccess(response.body().getPayment());
+                else
+                    paymentIntentListener.onFailure(SkreelUtil.deserializeRetrofitErrorBody(response).getMeta());
+            }
+
+            @Override
+            public void onFailure(Call<PaymentResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public static void validatePaymentOTP(ValidatePaymentOTP validatePaymentOTP, final PaymentOtpListener paymentOtpListener){
+        Call<ValidatePaymentOTPResponse> validatePaymentOTPCall = getInstance().service.validatePaymentOTP(validatePaymentOTP);
+
+        validatePaymentOTPCall.enqueue(new Callback<ValidatePaymentOTPResponse>() {
+            @Override
+            public void onResponse(Call<ValidatePaymentOTPResponse> call, Response<ValidatePaymentOTPResponse> response) {
+                if(response.code() == 200)
+                    paymentOtpListener.onSuccess(response.body().getValidatePaymentOTP());
+                else
+                    paymentOtpListener.onFailure(SkreelUtil.deserializeRetrofitErrorBody(response).getMeta());
+            }
+
+            @Override
+            public void onFailure(Call<ValidatePaymentOTPResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public static void cardValidation(String cardId, final CardValidationListener cardValidationListener){
+        CardValidation cardValidation = new CardValidation(cardId);
+        Call<CardValidationResponse> cardValidationResponseCall = getInstance().service.cardValidation(cardValidation);
+
+        cardValidationResponseCall.enqueue(new Callback<CardValidationResponse>() {
+            @Override
+            public void onResponse(Call<CardValidationResponse> call, Response<CardValidationResponse> response) {
+                if(response.code()== 200)
+                    cardValidationListener.onSuccess(response.body().getCardValidation());
+                else
+                    cardValidationListener.onFailure(SkreelUtil.deserializeRetrofitErrorBody(response).getMeta());
+            }
+
+            @Override
+            public void onFailure(Call<CardValidationResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public static void cardValidationOTP(String cardId, String otp, final CardValidationOTPListener cardValidationOTPListener){
+        CardValidationOTP cardValidationOTP = new CardValidationOTP(cardId,otp);
+        Call<CardValidationOTPResponse> cardValidationOTPResponseCall = getInstance().service.cardValidationOTP(cardValidationOTP);
+
+        cardValidationOTPResponseCall.enqueue(new Callback<CardValidationOTPResponse>() {
+            @Override
+            public void onResponse(Call<CardValidationOTPResponse> call, Response<CardValidationOTPResponse> response) {
+                if(response.code() == 200)
+                    cardValidationOTPListener.onSuccess(response.body().getCardValidationOTP());
+                else
+                    cardValidationOTPListener.onFailure(SkreelUtil.deserializeRetrofitErrorBody(response).getMeta());
+            }
+
+            @Override
+            public void onFailure(Call<CardValidationOTPResponse> call, Throwable t) {
+
+            }
+        });
+
     }
 
 }
