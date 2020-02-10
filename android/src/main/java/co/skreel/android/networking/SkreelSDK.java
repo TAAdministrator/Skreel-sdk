@@ -34,6 +34,7 @@ import co.skreel.android.models.cards.CardValidation;
 import co.skreel.android.models.cards.CardValidationOTP;
 import co.skreel.android.models.cards.CardValidationOTPResponse;
 import co.skreel.android.models.cards.CardValidationResponse;
+import co.skreel.android.models.cards.CustomerCard;
 import co.skreel.android.models.customer.Customer;
 import co.skreel.android.models.customer.CustomerListResponse;
 import co.skreel.android.models.customer.CustomerResponse;
@@ -226,8 +227,8 @@ public class SkreelSDK {
 
 
 
-    public static void createCard(Card card, final CardCreatedListener cardCreatedListener){
-        Call<CardResponse> cardResponseCall = getInstance().service.createCard(card);
+    public static void createCard(CustomerCard customerCard, final CardCreatedListener cardCreatedListener){
+        Call<CardResponse> cardResponseCall = getInstance().service.createCard(customerCard);
 
         cardResponseCall.enqueue(new Callback<CardResponse>() {
             @Override
