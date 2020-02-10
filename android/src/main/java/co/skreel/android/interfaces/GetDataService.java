@@ -14,6 +14,7 @@ import co.skreel.android.models.cards.CardValidation;
 import co.skreel.android.models.cards.CardValidationOTP;
 import co.skreel.android.models.cards.CardValidationOTPResponse;
 import co.skreel.android.models.cards.CardValidationResponse;
+import co.skreel.android.models.cards.CustomerCard;
 import co.skreel.android.models.customer.Customer;
 import co.skreel.android.models.customer.CustomerListResponse;
 import co.skreel.android.models.customer.CustomerResponse;
@@ -56,7 +57,7 @@ public interface GetDataService {
 
     //CARD
     @POST("cards")
-    Call<CardResponse> createCard(@Body Card card);
+    Call<CardResponse> createCard(@Body CustomerCard customerCard);
 
     @GET("cards")
     Call<Card> getCardByPhoneNumber(@Query("phone_number") String phoneNumber);
