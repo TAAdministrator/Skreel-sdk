@@ -11,9 +11,11 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,9 +23,15 @@ import java.util.regex.Pattern;
 
 import co.skreel.android.R;
 import co.skreel.android.databinding.CreditCardFragmentBinding;
+import co.skreel.android.interfaces.cardlisteners.CardCreatedListener;
+import co.skreel.android.models.Meta;
 import co.skreel.android.models.cards.Card;
+import co.skreel.android.models.cards.CustomerCard;
+import co.skreel.android.networking.SkreelSDK;
 
 public class CreditCardFragment extends Fragment {
+
+    private static final String TAG = "CreditCardFragment";
 
     private CreditCardViewModel mViewModel;
     private CreditCardFragmentBinding binding;
@@ -50,6 +58,7 @@ public class CreditCardFragment extends Fragment {
 
         setupTextListeners();
 
+        binding.btNext.setOnClickListener(nextButtonOnClickListener);
 
     }
 
@@ -74,6 +83,7 @@ public class CreditCardFragment extends Fragment {
 //        binding.etMonthAndYear.setText("08/20");
     }
 
+
     private TextWatcher getCreditCardNumberTxtWatcher() {
         return new TextWatcher() {
             @Override
@@ -89,7 +99,7 @@ public class CreditCardFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (creditCardNo.length() == 12) {
+                if (creditCardNo.length() == 16) {
                     isCreditCardNumberVerified = true;
                     binding.etCardNumber.setError(null);
                     checkEnableNextButton();
@@ -189,10 +199,24 @@ public class CreditCardFragment extends Fragment {
         };
     }
 
-    private View.OnClickListener onClickListener = new View.OnClickListener() {
+    private View.OnClickListener nextButtonOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Card card = new Card.Builder().setPan(creditCardNo).setExpiryDate(monthAndYear).setPin(pinNo).setCvv(cvvNo).build();
+            CustomerCard customerCard = new CustomerCard.Builder().setCard(card).setCustomerId("9302fc3f0dcb4814a1effd323b753ad6").build();
+
+            SkreelSDK.createCard(customerCard, new CardCreatedListener() {
+                @Override
+                public void onCreated(Card card) {
+                    Toast.makeText(getContext(), "Card Created", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onCreated: " + card.toString());
+                }
+
+                @Override
+                public void onFailure(Meta meta) {
+                    Log.d(TAG, "onFailure: " + meta.toString());
+                }
+            });
         }
     };
 

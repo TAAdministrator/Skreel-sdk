@@ -129,7 +129,7 @@
             android:background="@drawable/edittext_white_border"
             android:ems="10"
             android:hint="Pin"
-            android:inputType="number"
+            android:inputType="numberPassword"
             android:padding="@dimen/margin_10"
             app:layout_constraintEnd_toStartOf="@+id/guideline12"
             app:layout_constraintHorizontal_bias="0.0"
