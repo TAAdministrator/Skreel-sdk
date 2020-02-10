@@ -67,6 +67,17 @@ public class Card {
         this.expiryDate = expiryDate;
     }
 
+    @Override
+    public String toString() {
+        return "Card{" +
+                "cardId='" + cardId + '\'' +
+                ", pin='" + pin + '\'' +
+                ", pan='" + pan + '\'' +
+                ", cvv='" + cvv + '\'' +
+                ", expiryDate='" + expiryDate + '\'' +
+                '}';
+    }
+
     public static class Builder{
         private String pin;
         private String pan;
