@@ -30,4 +30,12 @@ public class CardValidationOTP {
     public void setCardId(String cardId) {
         this.cardId = cardId;
     }
+
+    @Override
+    public String toString() {
+        return "CardValidationOTP{" +
+                "otp='" + otp + '\'' +
+                ", cardId='" + cardId + '\'' +
+                '}';
+    }
 }
