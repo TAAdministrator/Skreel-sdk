@@ -2,6 +2,7 @@ package co.skreel.android.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -23,12 +24,22 @@ public class SkreelCardActivity extends AppCompatActivity implements CreditCardF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_skreel_card);
 
-
         Log.d(TAG, "onCreate: Skreel Card Activity Created.");
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
         Fragment fragment = new CreditCardFragment();
         switchFragment(fragment);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return super.onSupportNavigateUp();
     }
 
     @Override

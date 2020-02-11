@@ -3,7 +3,8 @@
     package="co.skreel.android">
 
     <application>
-        <activity android:name=".activities.SkreelCardActivity"></activity>
+        <activity android:name=".activities.SkreelCardActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 
 </manifest>
