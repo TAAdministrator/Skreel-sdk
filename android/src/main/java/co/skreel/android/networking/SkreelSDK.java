@@ -134,9 +134,7 @@ public class SkreelSDK {
 
             @Override
             public void onFailure(Call<CustomerResponse> call, Throwable t) {
-//                customerListener.onCustomerNotRetrieved(t.getMessage());
-                Log.d(TAG, "onFailure: " + t.getMessage());
-                Log.d(TAG, "onFailure: " + t.toString());
+                customerCreatedListener.onFailure(SkreelUtil.apiCallFailure(t.getMessage()));
             }
         });
     }
@@ -155,7 +153,7 @@ public class SkreelSDK {
 
             @Override
             public void onFailure(Call<CustomerResponse> call, Throwable t) {
-                //TODO: raise an exception. No failure should be silent
+                customerRetrievedListener.onFailure(SkreelUtil.apiCallFailure(t.getMessage()));
             }
         });
 
@@ -175,7 +173,7 @@ public class SkreelSDK {
 
             @Override
             public void onFailure(Call<CustomerListResponse> call, Throwable t) {
-
+                customerListRetrievedListener.onFailure(SkreelUtil.apiCallFailure(t.getMessage()));
             }
         });
     }
@@ -194,7 +192,7 @@ public class SkreelSDK {
 
             @Override
             public void onFailure(Call<CustomerResponse> call, Throwable t) {
-                //TODO: raise an exception. No failure should be silent
+                customerUpdatedListener.onFailure(SkreelUtil.apiCallFailure(t.getMessage()));
             }
         });
 
@@ -213,7 +211,7 @@ public class SkreelSDK {
 
             @Override
             public void onFailure(Call<CustomerResponse> call, Throwable t) {
-                //TODO: raise an exception. No failure should be silent
+                customerDeletedListener.onFailure(SkreelUtil.apiCallFailure(t.getMessage()));
             }
         });
     }
@@ -237,13 +235,11 @@ public class SkreelSDK {
                     cardCreatedListener.onCreated(response.body().getCard());
                 else
                     cardCreatedListener.onFailure(SkreelUtil.deserializeRetrofitErrorBody(response).getMeta());
-
             }
 
             @Override
             public void onFailure(Call<CardResponse> call, Throwable t) {
-                //TODO Figure out what to do with this response
-                Log.d(TAG, "onFailure: " + t.getMessage());
+                cardCreatedListener.onFailure(SkreelUtil.apiCallFailure(t.getMessage()));
             }
         });
     }
@@ -263,8 +259,7 @@ public class SkreelSDK {
 
             @Override
             public void onFailure(Call<CardResponse> call, Throwable t) {
-                //TODO Figure out what to do with this response
-                Log.d(TAG, "onFailure: " + t.getMessage());
+                cardRetrievedListener.onFailure(SkreelUtil.apiCallFailure(t.getMessage()));
             }
         });
     }
@@ -285,7 +280,7 @@ public class SkreelSDK {
 
             @Override
             public void onFailure(Call<CardResponse> call, Throwable t) {
-
+                cardUpdatedListener.onFailure(SkreelUtil.apiCallFailure(t.getMessage()));
             }
         });
     }
@@ -305,8 +300,7 @@ public class SkreelSDK {
 
             @Override
             public void onFailure(Call<CardResponse> call, Throwable t) {
-                //TODO Figure out what to do with this response
-                Log.d(TAG, "onFailure: " + t.getMessage());
+                cardDeletedListener.onFailure(SkreelUtil.apiCallFailure(t.getMessage()));
             }
         });
     }
@@ -325,7 +319,7 @@ public class SkreelSDK {
 
             @Override
             public void onFailure(Call<BankAccountResponse> call, Throwable t) {
-
+                bankAccountCreatedListener.onFailure(SkreelUtil.apiCallFailure(t.getMessage()));
             }
         });
 
@@ -346,8 +340,7 @@ public class SkreelSDK {
 
             @Override
             public void onFailure(Call<BankAccountResponse> call, Throwable t) {
-                //TODO Figure out what to do with this response
-                Log.d(TAG, "onFailure: " + t.getMessage());
+                bankAccountRetrievedListener.onFailure(SkreelUtil.apiCallFailure(t.getMessage()));
             }
         });
     }
@@ -367,8 +360,7 @@ public class SkreelSDK {
 
             @Override
             public void onFailure(Call<BankAccountListResponse> call, Throwable t) {
-                //TODO Figure out what to do with this response
-                Log.d(TAG, "onFailure: " + t.getMessage());
+                bankAccountListRetrievedListener.onFailure(SkreelUtil.apiCallFailure(t.getMessage()));
             }
         });
     }
@@ -389,7 +381,7 @@ public class SkreelSDK {
 
             @Override
             public void onFailure(Call<BankAccountResponse> call, Throwable t) {
-
+                bankAccountUpdatedListener.onFailure(SkreelUtil.apiCallFailure(t.getMessage()));
             }
         });
     }
@@ -408,8 +400,7 @@ public class SkreelSDK {
 
             @Override
             public void onFailure(Call<BankAccountResponse> call, Throwable t) {
-                //TODO Figure out what to do with this response
-                Log.d(TAG, "onFailure: " + t.getMessage());
+                bankAccountDeletedListener.onFailure(SkreelUtil.apiCallFailure(t.getMessage()));
             }
         });
     }
@@ -428,7 +419,7 @@ public class SkreelSDK {
 
             @Override
             public void onFailure(Call<PaymentResponse> call, Throwable t) {
-
+                paymentIntentListener.onFailure(SkreelUtil.apiCallFailure(t.getMessage()));
             }
         });
     }
@@ -447,7 +438,7 @@ public class SkreelSDK {
 
             @Override
             public void onFailure(Call<ValidatePaymentOTPResponse> call, Throwable t) {
-
+                    paymentOtpListener.onFailure(SkreelUtil.apiCallFailure(t.getMessage()));
             }
         });
     }
@@ -467,7 +458,7 @@ public class SkreelSDK {
 
             @Override
             public void onFailure(Call<CardValidationResponse> call, Throwable t) {
-
+                cardValidationListener.onFailure(SkreelUtil.apiCallFailure(t.getMessage()));
             }
         });
     }
@@ -487,7 +478,7 @@ public class SkreelSDK {
 
             @Override
             public void onFailure(Call<CardValidationOTPResponse> call, Throwable t) {
-
+                cardValidationOTPListener.onFailure(SkreelUtil.apiCallFailure(t.getMessage()));
             }
         });
 

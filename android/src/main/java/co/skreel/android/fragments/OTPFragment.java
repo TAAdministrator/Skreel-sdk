@@ -33,6 +33,7 @@ public class OTPFragment extends Fragment {
     private static final String TAG = "OTPFragment";
 
     private OTPViewModel mViewModel;
+    private OTPListener otpListener;
 
     OtpFragmentBinding binding;
     private Card card;
@@ -99,6 +100,7 @@ public class OTPFragment extends Fragment {
                 Log.d(TAG, "onSuccess: " + cardValidationOTP);
                 Toast.makeText(getContext(), cardValidationOTP.toString(), Toast.LENGTH_LONG).show();
                 SkreelUtil.hideProgressDialog(getActivity());
+                otpListener.onOTPRecieved(card);
             }
 
             @Override
@@ -112,7 +114,7 @@ public class OTPFragment extends Fragment {
 
     public void cardRevalidation(){
         //This is to resend OTP incase it was not recieved in the first instance of card creation.
-        SkreelSDK.cardValidation("87f44bfd57e148a1bd61155c8a50ac4d", new CardValidationListener() {
+        SkreelSDK.cardValidation(card.getCardId(), new CardValidationListener() {
             @Override
             public void onSuccess(CardValidation cardValidation) {
                 Log.d(TAG, "onSuccess: " + cardValidation);
@@ -127,5 +129,13 @@ public class OTPFragment extends Fragment {
                 SkreelUtil.hideProgressDialog(getActivity());
             }
         });
+    }
+
+    public void setOnOTPRecievedListener(OTPListener otpListener){
+        this.otpListener = otpListener;
+    }
+
+    public interface OTPListener{
+        void onOTPRecieved(Card card);
     }
 }

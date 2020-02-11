@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -15,7 +17,7 @@ import co.skreel.android.fragments.OTPFragment;
 import co.skreel.android.fragments.CreditCardFragment;
 import co.skreel.android.models.cards.Card;
 
-public class SkreelCardActivity extends AppCompatActivity implements CreditCardFragment.OnCreditCardAdditionComplete {
+public class SkreelCardActivity extends AppCompatActivity implements CreditCardFragment.OnCreditCardAdditionComplete, OTPFragment.OTPListener {
 
     private static final String TAG = "SkreelCardActivity";
 
@@ -62,8 +64,18 @@ public class SkreelCardActivity extends AppCompatActivity implements CreditCardF
     @Override
     public void onAttachFragment(@NonNull Fragment fragment) {
         super.onAttachFragment(fragment);
-        if(fragment instanceof CreditCardFragment){
+        if(fragment instanceof CreditCardFragment)
             ((CreditCardFragment) fragment).setOnCreditCardAdditionCompleteListener(this);
-        }
+        else if(fragment instanceof OTPFragment)
+            ((OTPFragment)fragment).setOnOTPRecievedListener(this);
+    }
+
+    @Override
+    public void onOTPRecieved(Card card) {
+
+        Intent intent=new Intent();
+        intent.putExtra("card",card);
+        setResult(Activity.RESULT_OK,intent);
+        finish();
     }
 }

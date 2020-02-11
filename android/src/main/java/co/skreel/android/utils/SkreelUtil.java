@@ -44,6 +44,10 @@ public class SkreelUtil {
         return new Meta(204,"No Content");
     }
 
+    public static Meta apiCallFailure(String message){
+        return new Meta(204,message);
+    }
+
     public static void showProgressDialog(Context context, boolean cancelable){
         if(progressDialog != null){
             progressDialog.dismiss();
