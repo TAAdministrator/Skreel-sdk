@@ -3,7 +3,9 @@ package co.skreel.android.models.cards;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Card {
+import java.io.Serializable;
+
+public class Card implements Serializable {
 
     @Expose(serialize = false)
     @SerializedName("id")
@@ -33,6 +35,14 @@ public class Card {
         this.pan = pan;
         this.cvv = cvv;
         this.expiryDate = expiryDate;
+    }
+
+    public String getCardId() {
+        return cardId;
+    }
+
+    public void setCardId(String cardId) {
+        this.cardId = cardId;
     }
 
     public String getPin() {

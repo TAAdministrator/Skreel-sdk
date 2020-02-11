@@ -1,6 +1,8 @@
 package co.skreel.android.fragments;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -17,8 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import co.skreel.android.R;
@@ -28,6 +28,7 @@ import co.skreel.android.models.Meta;
 import co.skreel.android.models.cards.Card;
 import co.skreel.android.models.cards.CustomerCard;
 import co.skreel.android.networking.SkreelSDK;
+import co.skreel.android.utils.SkreelUtil;
 
 public class CreditCardFragment extends Fragment {
 
@@ -37,6 +38,7 @@ public class CreditCardFragment extends Fragment {
     private CreditCardFragmentBinding binding;
     private String monthAndYear, cvvNo, creditCardNo, pinNo;
     boolean isCreditCardNumberVerified, isMonthAndYearVerified, isCVVVerified, isPinVerified;
+    private OnCreditCardAdditionComplete onCreditCardAdditionComplete;
 
 
     public static CreditCardFragment newInstance() {
@@ -77,10 +79,10 @@ public class CreditCardFragment extends Fragment {
         binding.etMonthAndYear.addTextChangedListener(getMonthAndYearTxtWatcher());
         binding.etPin.addTextChangedListener(getPinTxtWatcher());
 
-//        binding.etCardNumber.setText("123456789012");
-//        binding.etCvv.setText("213");
-//        binding.etPin.setText("1234");
-//        binding.etMonthAndYear.setText("08/20");
+        binding.etCardNumber.setText("1234567890127890");
+        binding.etCvv.setText("213");
+        binding.etPin.setText("1234");
+        binding.etMonthAndYear.setText("08/20");
     }
 
 
@@ -202,23 +204,34 @@ public class CreditCardFragment extends Fragment {
     private View.OnClickListener nextButtonOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            SkreelUtil.showProgressDialog(getContext(),false);
             Card card = new Card.Builder().setPan(creditCardNo).setExpiryDate(monthAndYear).setPin(pinNo).setCvv(cvvNo).build();
             CustomerCard customerCard = new CustomerCard.Builder().setCard(card).setCustomerId("9302fc3f0dcb4814a1effd323b753ad6").build();
 
             SkreelSDK.createCard(customerCard, new CardCreatedListener() {
                 @Override
                 public void onCreated(Card card) {
+                    SkreelUtil.hideProgressDialog(getActivity());
                     Toast.makeText(getContext(), "Card Created", Toast.LENGTH_SHORT).show();
+                    onCreditCardAdditionComplete.onCreditCardAdded(card);
                     Log.d(TAG, "onCreated: " + card.toString());
                 }
 
                 @Override
                 public void onFailure(Meta meta) {
                     Log.d(TAG, "onFailure: " + meta.toString());
+                    SkreelUtil.hideProgressDialog(getActivity());
                 }
             });
         }
     };
 
+    public interface OnCreditCardAdditionComplete {
+        void onCreditCardAdded(Card card);
+    }
+
+    public void setOnCreditCardAdditionCompleteListener(OnCreditCardAdditionComplete onCreditCardAdditionComplete){
+        this.onCreditCardAdditionComplete = onCreditCardAdditionComplete;
+    }
 
 }

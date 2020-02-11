@@ -1,10 +1,17 @@
 package co.skreel.android.models.cards;
 
-public class CardValidationOTP extends CardValidation {
+import com.google.gson.annotations.SerializedName;
+
+public class CardValidationOTP {
+
+    @SerializedName("otp")
     private String otp;
 
+    @SerializedName("card_id")
+    private String cardId;
+
     public CardValidationOTP(String cardId, String otp) {
-        super(cardId);
+        this.cardId = cardId;
         this.otp = otp;
     }
 
@@ -16,5 +23,11 @@ public class CardValidationOTP extends CardValidation {
         this.otp = otp;
     }
 
+    public String getCardId() {
+        return cardId;
+    }
 
+    public void setCardId(String cardId) {
+        this.cardId = cardId;
+    }
 }
