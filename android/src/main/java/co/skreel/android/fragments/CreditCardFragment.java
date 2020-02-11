@@ -219,6 +219,7 @@ public class CreditCardFragment extends Fragment {
 
                 @Override
                 public void onFailure(Meta meta) {
+                    Toast.makeText(getContext(), meta.toString(), Toast.LENGTH_LONG).show();
                     Log.d(TAG, "onFailure: " + meta.toString());
                     SkreelUtil.hideProgressDialog(getActivity());
                 }
