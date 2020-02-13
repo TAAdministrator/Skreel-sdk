@@ -26,6 +26,7 @@ import co.skreel.android.models.Meta;
 import co.skreel.android.models.cards.Card;
 import co.skreel.android.models.cards.CustomerCard;
 import co.skreel.android.networking.SkreelSDK;
+import co.skreel.android.utils.CardUtil;
 import co.skreel.android.utils.SkreelUtil;
 
 public class CreditCardFragment extends Fragment {
@@ -33,13 +34,13 @@ public class CreditCardFragment extends Fragment {
     private static final String TAG = "CreditCardFragment";
 
     private CreditCardViewModel mViewModel;
-//    private CreditCardFragmentBinding binding;
     private String monthAndYear, cvvNo, creditCardNo, pinNo;
     boolean isCreditCardNumberVerified, isMonthAndYearVerified, isCVVVerified, isPinVerified;
     private OnCreditCardAdditionComplete onCreditCardAdditionComplete;
     private Button btNext;
     private View view;
     private EditText etCardNumber, etMonthAndYear, etCvv, etPin;
+    private String customerId;
 
 
     public static CreditCardFragment newInstance() {
@@ -50,8 +51,6 @@ public class CreditCardFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.credit_card_fragment,container,false);
-//        binding = DataBindingUtil.inflate(inflater, R.layout.credit_card_fragment, container, false);
-//        return binding.getRoot();
         return view;
     }
 
@@ -64,11 +63,16 @@ public class CreditCardFragment extends Fragment {
         setupViews();
         setupTextListeners();
 
-
         btNext.setOnClickListener(nextButtonOnClickListener);
+
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            customerId = bundle.getString("customer_id");
+            Toast.makeText(getContext(), customerId, Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private void setupViews(){
+    private void setupViews() {
         btNext = view.findViewById(R.id.bt_next);
 
         etCardNumber = view.findViewById(R.id.et_card_number);
@@ -84,7 +88,6 @@ public class CreditCardFragment extends Fragment {
             btNext.setEnabled(false);
         }
     }
-
 
     private void setupTextListeners() {
         etCardNumber.addTextChangedListener(getCreditCardNumberTxtWatcher());
@@ -218,8 +221,15 @@ public class CreditCardFragment extends Fragment {
         @Override
         public void onClick(View v) {
             SkreelUtil.showProgressDialog(getContext(),false);
+//            String encryptedCreditCardNo = CardUtil.ecrypt_decrypt(getContext(),"encrypt",new Object[]{creditCardNo, CardUtil.KEY, 256});
+//            String encryptedMonthAndYear = CardUtil.ecrypt_decrypt(getContext(),"encrypt",new Object[]{monthAndYear, CardUtil.KEY, 256});
+//            String encryptedPinNo = CardUtil.ecrypt_decrypt(getContext(),"encrypt",new Object[]{pinNo, CardUtil.KEY, 256});
+//            String encryptedcvvNo = CardUtil.ecrypt_decrypt(getContext(),"encrypt",new Object[]{cvvNo, CardUtil.KEY, 256});
+//
+//            Card card = new Card.Builder().setPan(encryptedCreditCardNo).setExpiryDate(encryptedMonthAndYear).setPin(encryptedPinNo).setCvv(encryptedcvvNo).build();
+
             Card card = new Card.Builder().setPan(creditCardNo).setExpiryDate(monthAndYear).setPin(pinNo).setCvv(cvvNo).build();
-            CustomerCard customerCard = new CustomerCard.Builder().setCard(card).setCustomerId("9302fc3f0dcb4814a1effd323b753ad6").build();
+            CustomerCard customerCard = new CustomerCard.Builder().setCard(card).setCustomerId(customerId).build();
 
             SkreelSDK.createCard(customerCard, new CardCreatedListener() {
                 @Override
