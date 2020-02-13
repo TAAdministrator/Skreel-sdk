@@ -123,31 +123,32 @@ public class MainActivity extends AppCompatActivity{
 //        });
 
 
-        Customer customer = new Customer.Builder().setBvn("1234567890").setUserId("0800186ed9f143c48ed628f0db241a7f").build();
-
-        SkreelSDK.updateCustomer(customer, new CustomerUpdatedListener() {
-            @Override
-            public void onCustomerUpdate(Customer customer) {
-                Log.d(TAG, "onCustomerUpdate: " + customer);
-            }
-
-            @Override
-            public void onFailure(Meta meta) {
-                Log.d(TAG, "onFailure: " + meta);
-            }
-        });
+//        Customer customer = new Customer.Builder().setBvn("1234567890").setUserId("0800186ed9f143c48ed628f0db241a7f").build();
+//
+//        SkreelSDK.updateCustomer(customer, new CustomerUpdatedListener() {
+//            @Override
+//            public void onCustomerUpdate(Customer customer) {
+//                Log.d(TAG, "onCustomerUpdate: " + customer);
+//            }
+//
+//            @Override
+//            public void onFailure(Meta meta) {
+//                Log.d(TAG, "onFailure: " + meta);
+//            }
+//        });
 
 //        SkreelSDK.deleteCustomer();
 
 
-        Intent i = new Intent(this, SkreelCardActivity.class);
+//        Intent i = new Intent(this, SkreelCardActivity.class);
         Button button = findViewById(R.id.click_me);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(i,2);
+                SkreelSDK.displayCardView(MainActivity.this,"0800186ed9f143c48ed628f0db241a7f",5);
             }
         });
+
 
     }
 

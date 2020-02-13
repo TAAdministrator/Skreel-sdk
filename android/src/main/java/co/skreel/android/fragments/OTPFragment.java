@@ -61,7 +61,7 @@ public class OTPFragment extends Fragment {
     private void setupViews(){
         etOtpVerify = view.findViewById(R.id.et_otp_verify);
         tvResendCode = view.findViewById(R.id.tv_resend_code);
-        btnNext = view.findViewById(R.id.bt_next);
+        btnNext = view.findViewById(R.id.btn_next);
     }
 
     @Override
@@ -70,6 +70,7 @@ public class OTPFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(OTPViewModel.class);
         // TODO: Use the ViewModel
 
+        setupViews();
         Bundle bundle = getArguments();
         if(bundle != null){
             card = (Card)bundle.getSerializable("card");

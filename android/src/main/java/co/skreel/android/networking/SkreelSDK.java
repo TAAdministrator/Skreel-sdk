@@ -1,10 +1,13 @@
 package co.skreel.android.networking;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import java.util.List;
 
+import co.skreel.android.activities.SkreelCardActivity;
 import co.skreel.android.interfaces.bankaccountlisteners.BankAccountCreatedListener;
 import co.skreel.android.interfaces.bankaccountlisteners.BankAccountDeletedListener;
 import co.skreel.android.interfaces.bankaccountlisteners.BankAccountListRetrievedListener;
@@ -60,6 +63,7 @@ public class SkreelSDK {
     //for Retrofit API
     private Retrofit retrofit;
     private GetDataService service;
+    private static String customerId;
 
 
     private SkreelSDK(Context context){
@@ -93,6 +97,19 @@ public class SkreelSDK {
                     " is not initialized, call getInstance(...) first");
         }
         return instance;
+    }
+
+
+    /*
+     *
+     * SET BEFORE CUSTOMER
+     *
+     */
+
+    public static void displayCardView(Context context, String customerId, int requestCode){
+        Intent intent = new Intent(context, SkreelCardActivity.class);
+        intent.putExtra("customer_id", customerId);
+        ((Activity)context).startActivityForResult(intent, requestCode);
     }
 
 

@@ -20,6 +20,7 @@ import co.skreel.android.models.cards.Card;
 public class SkreelCardActivity extends AppCompatActivity implements CreditCardFragment.OnCreditCardAdditionComplete, OTPFragment.OTPListener {
 
     private static final String TAG = "SkreelCardActivity";
+    private String customerID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +34,21 @@ public class SkreelCardActivity extends AppCompatActivity implements CreditCardF
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+            customerID = bundle.getString("customer_id");
+            setupCreditCardFeagment();
+        }else{
+            finish();
+        }
+    }
 
+    public void setupCreditCardFeagment(){
         Fragment fragment = new CreditCardFragment();
+        Bundle bundle = new Bundle();
+
+        bundle.putSerializable("customer_id", customerID);
+        fragment.setArguments(bundle);
         switchFragment(fragment);
     }
 
