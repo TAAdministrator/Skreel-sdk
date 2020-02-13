@@ -1,8 +1,5 @@
 package co.skreel.android.fragments;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -17,12 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.regex.Pattern;
 
 import co.skreel.android.R;
-import co.skreel.android.databinding.CreditCardFragmentBinding;
 import co.skreel.android.interfaces.cardlisteners.CardCreatedListener;
 import co.skreel.android.models.Meta;
 import co.skreel.android.models.cards.Card;
@@ -35,10 +33,13 @@ public class CreditCardFragment extends Fragment {
     private static final String TAG = "CreditCardFragment";
 
     private CreditCardViewModel mViewModel;
-    private CreditCardFragmentBinding binding;
+//    private CreditCardFragmentBinding binding;
     private String monthAndYear, cvvNo, creditCardNo, pinNo;
     boolean isCreditCardNumberVerified, isMonthAndYearVerified, isCVVVerified, isPinVerified;
     private OnCreditCardAdditionComplete onCreditCardAdditionComplete;
+    private Button btNext;
+    private View view;
+    private EditText etCardNumber, etMonthAndYear, etCvv, etPin;
 
 
     public static CreditCardFragment newInstance() {
@@ -48,8 +49,10 @@ public class CreditCardFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.credit_card_fragment, container, false);
-        return binding.getRoot();
+        view = inflater.inflate(R.layout.credit_card_fragment,container,false);
+//        binding = DataBindingUtil.inflate(inflater, R.layout.credit_card_fragment, container, false);
+//        return binding.getRoot();
+        return view;
     }
 
     @Override
@@ -58,31 +61,41 @@ public class CreditCardFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(CreditCardViewModel.class);
         // TODO: Use the ViewModel
 
+        setupViews();
         setupTextListeners();
 
-        binding.btNext.setOnClickListener(nextButtonOnClickListener);
 
+        btNext.setOnClickListener(nextButtonOnClickListener);
+    }
+
+    private void setupViews(){
+        btNext = view.findViewById(R.id.bt_next);
+
+        etCardNumber = view.findViewById(R.id.et_card_number);
+        etCvv = view.findViewById(R.id.et_cvv);
+        etMonthAndYear = view.findViewById(R.id.et_month_and_year);
+        etPin = view.findViewById(R.id.et_pin);
     }
 
     private void checkEnableNextButton() {
         if (isCreditCardNumberVerified && isMonthAndYearVerified && isCVVVerified && isPinVerified) {
-            binding.btNext.setEnabled(true);
+            btNext.setEnabled(true);
         } else {
-            binding.btNext.setEnabled(false);
+            btNext.setEnabled(false);
         }
     }
 
 
     private void setupTextListeners() {
-        binding.etCardNumber.addTextChangedListener(getCreditCardNumberTxtWatcher());
-        binding.etCvv.addTextChangedListener(getCVVTxtWatcher());
-        binding.etMonthAndYear.addTextChangedListener(getMonthAndYearTxtWatcher());
-        binding.etPin.addTextChangedListener(getPinTxtWatcher());
+        etCardNumber.addTextChangedListener(getCreditCardNumberTxtWatcher());
+        etCvv.addTextChangedListener(getCVVTxtWatcher());
+        etMonthAndYear.addTextChangedListener(getMonthAndYearTxtWatcher());
+        etPin.addTextChangedListener(getPinTxtWatcher());
 
-        binding.etCardNumber.setText("1234567890127890");
-        binding.etCvv.setText("213");
-        binding.etPin.setText("1234");
-        binding.etMonthAndYear.setText("08/20");
+        etCardNumber.setText("1234567890127890");
+        etCvv.setText("213");
+        etPin.setText("1234");
+        etMonthAndYear.setText("08/20");
     }
 
 
@@ -103,10 +116,10 @@ public class CreditCardFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 if (creditCardNo.length() == 16) {
                     isCreditCardNumberVerified = true;
-                    binding.etCardNumber.setError(null);
+                    etCardNumber.setError(null);
                     checkEnableNextButton();
                 } else {
-                    binding.etCardNumber.setError("Invalid Card Number Length");
+                    etCardNumber.setError("Invalid Card Number Length");
                     isCreditCardNumberVerified = false;
                 }
             }
@@ -130,10 +143,10 @@ public class CreditCardFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 if (cvvNo.length() == 3) {
                     isCVVVerified = true;
-                    binding.etCvv.setError(null);
+                    etCvv.setError(null);
                     checkEnableNextButton();
                 } else {
-                    binding.etCvv.setError("Invalid CVV");
+                    etCvv.setError("Invalid CVV");
                     isCVVVerified = false;
                 }
 
@@ -157,15 +170,15 @@ public class CreditCardFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if(monthAndYear.length() == 2 && Pattern.matches("1[0-2]|0[1-9]|\\d", monthAndYear)) {
-                    binding.etMonthAndYear.setText(s.toString() + "/");
-                    binding.etMonthAndYear.setSelection(3);
+                    etMonthAndYear.setText(s.toString() + "/");
+                    etMonthAndYear.setSelection(3);
                 }
                 if (monthAndYear.length() == 5) {
                     isMonthAndYearVerified = true;
-                    binding.etMonthAndYear.setError(null);
+                    etMonthAndYear.setError(null);
                     checkEnableNextButton();
                 } else {
-                    binding.etMonthAndYear.setError("Invalid month or year");
+                    etMonthAndYear.setError("Invalid month or year");
                     isMonthAndYearVerified = false;
                 }
 
@@ -190,10 +203,10 @@ public class CreditCardFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 if (pinNo.length() == 4) {
                     isPinVerified = true;
-                    binding.etPin.setError(null);
+                    etPin.setError(null);
                     checkEnableNextButton();
                 } else {
-                    binding.etPin.setError("Invalid PIN");
+                    etPin.setError("Invalid PIN");
                     isPinVerified = false;
                 }
 

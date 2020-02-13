@@ -1,6 +1,5 @@
 package co.skreel.android.fragments;
 
-import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -13,12 +12,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mukesh.OnOtpCompletionListener;
+import com.mukesh.OtpView;
 
 import co.skreel.android.R;
-import co.skreel.android.databinding.OtpFragmentBinding;
 import co.skreel.android.interfaces.cardlisteners.CardValidationListener;
 import co.skreel.android.interfaces.cardlisteners.CardValidationOTPListener;
 import co.skreel.android.models.Meta;
@@ -35,9 +36,13 @@ public class OTPFragment extends Fragment {
     private OTPViewModel mViewModel;
     private OTPListener otpListener;
 
-    OtpFragmentBinding binding;
+//    OtpFragmentBinding binding;
     private Card card;
     private String cardOTP;
+    private View view;
+    private OtpView etOtpVerify;
+    private Button btnNext;
+    private TextView tvResendCode;
 
     public static OTPFragment newInstance() {
         return new OTPFragment();
@@ -46,8 +51,17 @@ public class OTPFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-         binding = DataBindingUtil.inflate(inflater,R.layout.otp_fragment, container,false);
-        return binding.getRoot();
+//         binding = DataBindingUtil.inflate(inflater,R.layout.otp_fragment, container,false);
+//        return binding.getRoot();
+        view = inflater.inflate(R.layout.otp_fragment, container,false);
+        return view;
+
+    }
+
+    private void setupViews(){
+        etOtpVerify = view.findViewById(R.id.et_otp_verify);
+        tvResendCode = view.findViewById(R.id.tv_resend_code);
+        btnNext = view.findViewById(R.id.bt_next);
     }
 
     @Override
@@ -63,17 +77,17 @@ public class OTPFragment extends Fragment {
             Toast.makeText(getContext(), card.toString(), Toast.LENGTH_SHORT).show();
         }
 
-        binding.etOtpVerify.setOtpCompletionListener(new OnOtpCompletionListener() {
+        etOtpVerify.setOtpCompletionListener(new OnOtpCompletionListener() {
             @Override
             public void onOtpCompleted(String otp) {
                 cardOTP = otp;
                 Log.d("onOtpCompleted=>", otp);
-                binding.btnNext.setVisibility(View.VISIBLE);
+                btnNext.setVisibility(View.VISIBLE);
             }
         });
 
-        binding.btnNext.setOnClickListener(verifyOTPClickListener);
-        binding.tvResendCode.setOnClickListener(reSendOTP);
+        btnNext.setOnClickListener(verifyOTPClickListener);
+        tvResendCode.setOnClickListener(reSendOTP);
 
     }
 
