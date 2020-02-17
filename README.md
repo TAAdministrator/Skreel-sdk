@@ -19,7 +19,19 @@ Step 2. Add the dependency
 	}
 	
 
-Add the SkreelSDK class to your code, call the required method and implement the necessary interfaces
+Add the SkreelSDK class to your code, 
+
+Step 3. Initialize the class
+
+        @Override
+        public void onCreate() {
+            super.onCreate();
+            SkreelSDK.getInstance(this);
+        }
+        
+        
+
+Step 4. Call the required method and implement the necessary interfaces
 
 A Customer creation sample
 
