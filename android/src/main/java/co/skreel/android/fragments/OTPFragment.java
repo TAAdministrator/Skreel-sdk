@@ -74,7 +74,7 @@ public class OTPFragment extends Fragment {
         Bundle bundle = getArguments();
         if(bundle != null){
             card = (Card)bundle.getSerializable("card");
-            Log.d(TAG, "onActivityCreated: " + card.toString());
+//            Log.d(TAG, "onActivityCreated: " + card.toString());
             Toast.makeText(getContext(), card.toString(), Toast.LENGTH_SHORT).show();
         }
 
@@ -82,7 +82,7 @@ public class OTPFragment extends Fragment {
             @Override
             public void onOtpCompleted(String otp) {
                 cardOTP = otp;
-                Log.d("onOtpCompleted=>", otp);
+//                Log.d("onOtpCompleted=>", otp);
                 btnNext.setVisibility(View.VISIBLE);
             }
         });
@@ -140,7 +140,6 @@ public class OTPFragment extends Fragment {
             @Override
             public void onFailure(Meta meta) {
                 Log.d(TAG, "onFailure: "  + meta);
-                Toast.makeText(getContext(), meta.toString(), Toast.LENGTH_LONG).show();
                 SkreelUtil.hideProgressDialog(getActivity());
             }
         });
