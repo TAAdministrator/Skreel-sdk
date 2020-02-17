@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity{
         if(requestCode == 5){
             if(resultCode == Activity.RESULT_OK){
                 Card ca = (Card)data.getSerializableExtra("card");
-                Toast.makeText(this, "CARD: " + ca.toString(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "CARD: " + ca.toString(), Toast.LENGTH_SHORT).show();
             }
         }
     }

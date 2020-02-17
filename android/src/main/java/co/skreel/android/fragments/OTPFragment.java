@@ -75,7 +75,7 @@ public class OTPFragment extends Fragment {
         if(bundle != null){
             card = (Card)bundle.getSerializable("card");
 //            Log.d(TAG, "onActivityCreated: " + card.toString());
-            Toast.makeText(getContext(), card.toString(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), card.toString(), Toast.LENGTH_SHORT).show();
         }
 
         etOtpVerify.setOtpCompletionListener(new OnOtpCompletionListener() {
@@ -113,7 +113,7 @@ public class OTPFragment extends Fragment {
             @Override
             public void onSuccess(CardValidationOTP cardValidationOTP) {
                 Log.d(TAG, "onSuccess: " + cardValidationOTP);
-                Toast.makeText(getContext(), cardValidationOTP.toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), cardValidationOTP.toString(), Toast.LENGTH_LONG).show();
                 SkreelUtil.hideProgressDialog(getActivity());
                 otpListener.onOTPRecieved(card);
             }
@@ -121,7 +121,7 @@ public class OTPFragment extends Fragment {
             @Override
             public void onFailure(Meta meta) {
                 Log.d(TAG, "onFailure: " + meta);
-                Toast.makeText(getContext(), meta.toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), meta.toString(), Toast.LENGTH_LONG).show();
                 SkreelUtil.hideProgressDialog(getActivity());
             }
         });
@@ -133,7 +133,7 @@ public class OTPFragment extends Fragment {
             @Override
             public void onSuccess(CardValidation cardValidation) {
                 Log.d(TAG, "onSuccess: " + cardValidation);
-                Toast.makeText(getContext(), cardValidation.toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), cardValidation.toString(), Toast.LENGTH_LONG).show();
                 SkreelUtil.hideProgressDialog(getActivity());
             }
 
