@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 2){
+        if(requestCode == 5){
             if(resultCode == Activity.RESULT_OK){
                 Card ca = (Card)data.getSerializableExtra("card");
                 Toast.makeText(this, "CARD: " + ca.toString(), Toast.LENGTH_SHORT).show();
