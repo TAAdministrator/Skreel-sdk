@@ -47,3 +47,25 @@ A Customer creation sample
                 }
             });
 
+Create a card sample
+
+        Button button = findViewById(R.id.click_me);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SkreelSDK.displayCardView(MainActivity.this,"0800186ed9f143c48ed628f0db241a7f",5);
+            }
+        });
+
+
+Get Card creation result
+ 
+       @Override
+       protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+           super.onActivityResult(requestCode, resultCode, data);
+           if(requestCode == 5){
+               if(resultCode == Activity.RESULT_OK){
+                   Card ca = (Card)data.getSerializableExtra("card");
+                   }
+               }
+           }
