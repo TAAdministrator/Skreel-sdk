@@ -109,7 +109,11 @@ public class SkreelSDK {
     public static void displayCardView(Context context, String customerId, int requestCode){
         Intent intent = new Intent(context, SkreelCardActivity.class);
         intent.putExtra("customer_id", customerId);
-        ((Activity)context).startActivityForResult(intent, requestCode);
+        if(context instanceof Activity)
+            ((Activity)context).startActivityForResult(intent, requestCode);
+        else
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
     }
 
 
