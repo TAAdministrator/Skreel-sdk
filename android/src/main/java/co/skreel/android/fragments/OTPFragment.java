@@ -53,6 +53,7 @@ public class OTPFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 //         binding = DataBindingUtil.inflate(inflater,R.layout.otp_fragment, container,false);
 //        return binding.getRoot();
+
         view = inflater.inflate(R.layout.otp_fragment, container,false);
         return view;
 

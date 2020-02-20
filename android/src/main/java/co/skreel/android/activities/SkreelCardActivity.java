@@ -28,6 +28,7 @@ public class SkreelCardActivity extends AppCompatActivity implements CreditCardF
         setContentView(R.layout.activity_skreel_card);
 
         Log.d(TAG, "onCreate: Skreel Card Activity Created.");
+//        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -71,6 +72,7 @@ public class SkreelCardActivity extends AppCompatActivity implements CreditCardF
     private void switchFragment(Fragment fragment) {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
+//        transaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
         transaction.replace(R.id.frame_acct_setup, fragment);
         transaction.commit();
     }

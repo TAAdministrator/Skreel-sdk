@@ -68,7 +68,7 @@ public class CreditCardFragment extends Fragment {
         Bundle bundle = getArguments();
         if(bundle != null){
             customerId = bundle.getString("customer_id");
-//            Toast.makeText(getContext(), customerId, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), customerId, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -231,19 +231,20 @@ public class CreditCardFragment extends Fragment {
             Card card = new Card.Builder().setPan(creditCardNo).setExpiryDate(monthAndYear).setPin(pinNo).setCvv(cvvNo).build();
             CustomerCard customerCard = new CustomerCard.Builder().setCard(card).setCustomerId(customerId).build();
 
+            Log.d(TAG, "onCreated: " + card.toString());
             SkreelSDK.createCard(customerCard, new CardCreatedListener() {
                 @Override
                 public void onCreated(Card card) {
                     SkreelUtil.hideProgressDialog(getActivity());
-//                    Toast.makeText(getContext(), "Card Created", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Card Created", Toast.LENGTH_SHORT).show();
                     onCreditCardAdditionComplete.onCreditCardAdded(card);
-//                    Log.d(TAG, "onCreated: " + card.toString());
+                    Log.d(TAG, "onCreated: " + card.toString());
                 }
 
                 @Override
                 public void onFailure(Meta meta) {
-//                    Toast.makeText(getContext(), meta.toString(), Toast.LENGTH_LONG).show();
-//                    Log.d(TAG, "onFailure: " + meta.toString());
+                    Toast.makeText(getContext(), meta.toString(), Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "onFailure: " + meta.toString());
                     SkreelUtil.hideProgressDialog(getActivity());
                 }
             });

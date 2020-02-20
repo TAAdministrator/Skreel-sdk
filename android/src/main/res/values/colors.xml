@@ -11,4 +11,5 @@
     <color name="black_color">#333333</color>
     <color name="pure_black_color">#000000</color>
     <color name="bg_white">#f9f9fc</color>
+    <color name="bg_transluscent">#33000000</color>
 </resources>

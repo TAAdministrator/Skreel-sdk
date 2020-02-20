@@ -7,7 +7,7 @@ import co.skreel.android.models.customer.Customer;
 
 public class CustomerCard{
     @Expose(deserialize = false)
-    @SerializedName("customer_id")
+    @SerializedName("user_id")
     private String customerId;
 
     @Expose(deserialize = false)
