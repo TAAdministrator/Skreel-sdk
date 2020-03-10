@@ -139,14 +139,16 @@ public class SkreelSDK {
            });
     }
 
-    public static void createCustomer(String phoneNumber , final CustomerCreatedListener customerCreatedListener){
-        Customer customer = new Customer.Builder().setCustomerPhoneNumber(phoneNumber).build();
+    public static void createCustomer(String phoneNumber ,String identifier , final CustomerCreatedListener customerCreatedListener){
+        Customer customer = new Customer.Builder().setCustomerPhoneNumber(phoneNumber).setPrimaryIdentifierType(identifier).build();
+
+//        Log.d(TAG, "createCustomer: " + customer.toString());
 
         Call<CustomerResponse> customerResponseCall = getInstance().service.createCustomer(customer);
         customerResponseCall.enqueue(new Callback<CustomerResponse>() {
             @Override
             public void onResponse(Call<CustomerResponse> call, Response<CustomerResponse> response) {
-                Log.d(TAG, "onResponse: " + response.body());
+//                Log.d(TAG, "onResponse: " + response.body());
                 if(response.code() == 201)
                     customerCreatedListener.onCustomerCreated(response.body().getData());
                 else
@@ -243,7 +245,6 @@ public class SkreelSDK {
     * CARDS
     *
     */
-
 
 
     public static void createCard(CustomerCard customerCard, final CardCreatedListener cardCreatedListener){

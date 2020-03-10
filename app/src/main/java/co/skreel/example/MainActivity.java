@@ -81,17 +81,17 @@ public class MainActivity extends AppCompatActivity{
 
         //********************** CUSTOMER CALLS **************************//
 
-//        SkreelSDK.createCustomer("07032068837", new CustomerCreatedListener() {
-//            @Override
-//            public void onCustomerCreated(Customer customer) {
-//                Log.d(TAG, "onCustomerCreated: " + customer);
-//            }
-//
-//            @Override
-//            public void onFailure(Meta meta) {
-//                Log.d(TAG, "onFailure: " + meta);
-//            }
-//        });
+        SkreelSDK.createCustomer("09034567890","phone", new CustomerCreatedListener() {
+            @Override
+            public void onCustomerCreated(Customer customer) {
+                Log.d(TAG, "onCustomerCreated: " + customer);
+            }
+
+            @Override
+            public void onFailure(Meta meta) {
+                Log.d(TAG, "onFailure: " + meta);
+            }
+        });
 
 //        SkreelSDK.getCustomerbyId("0800186ed9f143c48ed628f0db241a7f", new CustomerRetrievedListener() {
 //            @Override
@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity{
 
 
 //        Intent i = new Intent(this, SkreelCardActivity.class);
+
         Button button = findViewById(R.id.click_me);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,8 +149,6 @@ public class MainActivity extends AppCompatActivity{
                 SkreelSDK.displayCardView(MainActivity.this,"0800186ed9f143c48ed628f0db241a7f",5);
             }
         });
-
-
     }
 
     @Override

@@ -6,8 +6,12 @@ import com.google.gson.annotations.SerializedName;
 public class Customer {
 
     @Expose()
-    @SerializedName("phone_number")
+    @SerializedName("phone")
     private String phoneNumber;
+
+    @Expose()
+    @SerializedName("primary_identifier_type")
+    private String primaryIdentifierType;
 
     @SerializedName("bvn")
     private String bvn;
@@ -15,10 +19,19 @@ public class Customer {
     @SerializedName("id")
     private String userId;
 
-    public Customer(String phoneNumber, String bvn, String userId) {
+    public Customer(String phoneNumber, String primaryIdentifierType, String bvn, String userId) {
         this.phoneNumber = phoneNumber;
+        this.primaryIdentifierType = primaryIdentifierType;
         this.bvn = bvn;
         this.userId = userId;
+    }
+
+    public String getPrimaryIdentifierType() {
+        return primaryIdentifierType;
+    }
+
+    public void setPrimaryIdentifierType(String primaryIdentifierType) {
+        this.primaryIdentifierType = primaryIdentifierType;
     }
 
     public String getPhoneNumber() {
@@ -49,9 +62,15 @@ public class Customer {
         private String phoneNumber;
         private String bvn;
         private String userId;
+        private String primaryIdentifierType;
 
         public Builder setCustomerPhoneNumber(final String phoneNumber){
             this.phoneNumber = phoneNumber;
+            return this;
+        }
+
+        public Builder setPrimaryIdentifierType(final String identifierType){
+            this.primaryIdentifierType = identifierType;
             return this;
         }
 
@@ -66,7 +85,7 @@ public class Customer {
         }
 
         public Customer build(){
-            return new Customer(phoneNumber,bvn,userId);
+            return new Customer(phoneNumber,primaryIdentifierType,bvn,userId);
         }
     }
 
@@ -74,6 +93,7 @@ public class Customer {
     public String toString() {
         return "Customer{" +
                 "phoneNumber='" + phoneNumber + '\'' +
+                ", primaryIdentifierType='" + primaryIdentifierType + '\'' +
                 ", bvn='" + bvn + '\'' +
                 ", userId='" + userId + '\'' +
                 '}';
